@@ -114,6 +114,9 @@ myorigin = <%= @myorigin %>
 #inet_interfaces = $myhostname, localhost
 inet_interfaces = <%= @inet_interfaces %>
 
+# Enable IPv4, and IPv6 if supported
+inet_protocols = <%= @inet_protocols %>
+
 # The proxy_interfaces parameter specifies the network interface
 # addresses that this mail system receives mail on by way of a
 # proxy or network address translation unit. This setting extends
