@@ -182,7 +182,7 @@ class postfix::server (
       notify  => Service['postfix'],
     }
 
-    exec { 'create dh512',
+    exec { 'create dh512':
       command => '/usr/bin/openssl gendh -out /etc/postfix/dh_512.pem -2 512',
       creates => '/etc/postfix/dh_512.pem',
       notify  => Service['postfix'],
