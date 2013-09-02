@@ -718,9 +718,25 @@ readme_directory = /usr/share/doc/postfix-2.6.6/README_FILES
 <% if @ssl -%>
 # TLS stuff
 smtpd_use_tls = yes
+smtpd_tls_security_level = may
 smtpd_tls_loglevel = 1
+<% if @ssl_key -%>
+smtpd_tls_key_file = <%= @ssl_key %>
+<% else -%>
 smtpd_tls_key_file = /etc/pki/tls/private/<%= @ssl %>.key
+<% end -%>
+<% if @ssl_cert -%>
+smtpd_tls_cert_file = <%= @ssl_cert %>
+<% else -%>
 smtpd_tls_cert_file = /etc/pki/tls/certs/<%= @ssl %>.crt
+<% end -%>
+<% if @ssl_ca -%>
+smtpd_tls_CAfile = <%= @ssl_ca %>
+<% end -%>
+<% if @ssl_create_dh -%>
+smtpd_tls_dh512_param_file = /etc/postfix/dh_512.pem
+smtpd_tls_dh1024_param_file = /etc/postfix/dh_1024.pem
+<% end -%>
 
 <% end -%>
 <% if @smtpd_sasl_auth -%>
