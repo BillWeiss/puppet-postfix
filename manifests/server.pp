@@ -47,10 +47,17 @@ class postfix::server (
   $smtpd_sender_restrictions = [],
   $smtpd_recipient_restrictions = [],
   $ssl = false,
+  $ssl_key = false,
+  $ssl_cert = false,
+  $ssl_ca = false,
+  $ssl_create_dh = false,
   $smtpd_sasl_auth = false,
   $smtpd_sasl_type = 'dovecot',
   $smtpd_sasl_path = 'private/auth',
   $sender_canonical_maps = false,
+  $always_add_missing_headers = false,
+  $mailbox_size_limit = false,
+  $transport_maps = false,
   # master.cf
   $smtp_content_filter = [],
   $submission = false,
@@ -165,6 +172,23 @@ class postfix::server (
   postfix::file { 'body_checks':
     content => template('postfix/body_checks.erb'),
   }
+
+  ## Every server should generate its own DH param files.  Not everyone
+  ## does
+  if $ssl_create_dh {
+    exec { 'create dh1024':
+      command => '/usr/bin/openssl gendh -out /etc/postfix/dh_1024.pem -2 1024',
+      creates => '/etc/postfix/dh_1024.pem',
+      notify  => Service['postfix'],
+    }
+
+    exec { 'create dh512':
+      command => '/usr/bin/openssl gendh -out /etc/postfix/dh_512.pem -2 512',
+      creates => '/etc/postfix/dh_512.pem',
+      notify  => Service['postfix'],
+    }
+  }
+      
 
 }
 

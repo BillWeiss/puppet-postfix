@@ -114,6 +114,9 @@ myorigin = <%= @myorigin %>
 #inet_interfaces = $myhostname, localhost
 inet_interfaces = <%= @inet_interfaces %>
 
+# Enable IPv4, and IPv6 if supported
+inet_protocols = <%= @inet_protocols %>
+
 # The proxy_interfaces parameter specifies the network interface
 # addresses that this mail system receives mail on by way of a
 # proxy or network address translation unit. This setting extends
@@ -709,9 +712,25 @@ readme_directory = /usr/share/doc/postfix-2.3.3/README_FILES
 <% if @ssl -%>
 # TLS stuff
 smtpd_use_tls = yes
+smtpd_tls_security_level = may
 smtpd_tls_loglevel = 1
+<% if @ssl_key -%>
+smtpd_tls_key_file = <%= @ssl_key %>
+<% else -%>
 smtpd_tls_key_file = /etc/pki/tls/private/<%= @ssl %>.key
+<% end -%>
+<% if @ssl_cert -%>
+smtpd_tls_cert_file = <%= @ssl_cert %>
+<% else -%>
 smtpd_tls_cert_file = /etc/pki/tls/certs/<%= @ssl %>.crt
+<% end -%>
+<% if @ssl_ca -%>
+smtpd_tls_CAfile = <%= @ssl_ca %>
+<% end -%>
+<% if @ssl_create_dh -%>
+smtpd_tls_dh512_param_file = /etc/postfix/dh_512.pem
+smtpd_tls_dh1024_param_file = /etc/postfix/dh_1024.pem
+<% end -%>
 
 <% end -%>
 <% if @smtpd_sasl_auth -%>
@@ -804,4 +823,13 @@ body_checks = regexp:/etc/postfix/body_checks
 <% if @sender_canonical_maps -%>
 sender_canonical_maps = <%= @sender_canonical_maps %>
 
+<% end -%>
+<% if @always_add_missing_headers -%>
+always_add_missing_headers = <%= @always_add_missing_headers %>
+<% end -%>
+<% if @mailbox_size_limit -%>
+mailbox_size_limit = <%= @mailbox_size_limit %>
+<% end -%>
+<% if @transport_maps -%>
+transport_maps = <%= @transport_maps %>
 <% end -%>

@@ -814,3 +814,12 @@ body_checks = regexp:/etc/postfix/body_checks
 sender_canonical_maps = <%= @sender_canonical_maps %>
 
 <% end -%>
+<% if @always_add_missing_headers -%>
+always_add_missing_headers = <%= @always_add_missing_headers %>
+<% end -%>
+<% if @mailbox_size_limit -%>
+mailbox_size_limit = <%= @mailbox_size_limit %>
+<% end -%>
+<% if @transport_maps -%>
+transport_maps = <%= @transport_maps %>
+<% end -%>
